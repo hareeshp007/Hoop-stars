@@ -1,6 +1,7 @@
 
 using hoopStars.Score;
-using System;
+using hoopStars.sound;
+using hoopStars.UI;
 using UnityEngine;
 
 
@@ -17,20 +18,16 @@ namespace hoopStars.player
         [SerializeField]
         private bool currentlyOnScoreBall;
 
-
-        // Start is called before the first frame update
         void Start()
         {
             rb = GetComponent<Rigidbody>();
             force.y = forceValue*2;
+            UIManager.Instance.SetPlayer(this);
         }
 
-        // Update is called once per frame
         void Update()
         {
             HandleInput();
-
-
         }
 
         private void HandleInput()
@@ -47,6 +44,7 @@ namespace hoopStars.player
 
         public void forceTowardsLeft()
         {
+            SoundManager.Instance.Play(Sounds.ButtonClick);
             if (force.x > 0)
             {
                 force.x = -forceValue * 2;
@@ -61,6 +59,7 @@ namespace hoopStars.player
 
         public void forceTowardsRight()
         {
+            SoundManager.Instance.Play(Sounds.ButtonClick);
             if (force.x < 0)
             {
                 force.x = forceValue * 2;

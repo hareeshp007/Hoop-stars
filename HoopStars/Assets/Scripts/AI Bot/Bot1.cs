@@ -1,4 +1,4 @@
-using System.Collections;
+
 using UnityEngine;
 
 namespace hoopStars.Bot
@@ -13,22 +13,27 @@ namespace hoopStars.Bot
         private Vector3 force;
         [SerializeField]
         private float forceValue;
+        [SerializeField]
+        private float nextTimer;
+        [SerializeField]
+        private float timer;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             rb = GetComponent<Rigidbody>();
-            StartCoroutine(Tick());
             force.y = forceValue;
+            nextTimer = Random.Range(nextTickSec, 1);
         }
-
-        // Update is called once per frame
-        IEnumerator Tick()
+        private void Update()
         {
-            applyForce();
-            float sec = Random.Range(nextTickSec, 1);
-            yield return new WaitForSeconds(sec);
-            StartCoroutine(Tick());
+            if (timer > nextTimer)
+            {
+                nextTimer = Random.Range(nextTickSec, 1);
+                timer = 0;
+                applyForce();
+            }
+            timer+=Time.deltaTime;
+            
         }
 
         private void applyForce()
@@ -52,5 +57,6 @@ namespace hoopStars.Bot
                 rb.AddForce(force, ForceMode.Impulse);
             }
         }
+        
     }
 }

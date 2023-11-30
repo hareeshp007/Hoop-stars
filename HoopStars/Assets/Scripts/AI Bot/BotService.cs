@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace hoopStars.Bot
@@ -27,21 +25,21 @@ namespace hoopStars.Bot
         private void Initilization()
         {
             bot1 = GameObject.Instantiate(Bot1Prefab, Bot1Position);
-            Bot1Position = bot1.transform;
             bot1.SetActive(false);
             bot2 = GameObject.Instantiate(Bot2Prefab, Bot2Position);
-            Bot2Position = bot2.transform;
-            bot2.GetComponent<Bot2>().SetScoreBall(ScoreBall);
             bot2.SetActive(false);
         }
 
         public void SpawnOneBot()
         {
-            bot1.SetActive(true);
+            bot1.SetActive(true); 
+            bot2.GetComponent<Bot2>().SetScoreBall(ScoreBall);
         }
         public void SpwanTwoBot()
         {
-            bot1.SetActive(true); bot2.SetActive(true);
+            bot1.SetActive(true);
+            bot2.GetComponent<Bot2>().SetScoreBall(ScoreBall);
+            bot2.SetActive(true);
         }
 
         public void SetScoreBall(Transform transform)
@@ -51,17 +49,18 @@ namespace hoopStars.Bot
 
         public void GameRestart()
         {
-            changePos(bot1, Bot1Position);
+            changePos(bot1.transform, Bot1Position);
+            bot1.GetComponent<Bot1>().StopAllCoroutines();
             bot1.SetActive(false); 
-            changePos(bot2, Bot2Position);
-            bot2.GetComponent<Bot2>().SetScoreBall(ScoreBall);
+            changePos(bot2.transform, Bot2Position);
+            bot2.GetComponent<Bot2>().StopAllCoroutines();
             bot2.SetActive(false);
         }
 
-        private void changePos(GameObject bot, Transform botPosition)
+        private void changePos(Transform bot, Transform botPosition)
         {
             bot.transform.position = botPosition.position;
-            bot.transform.rotation = Quaternion.identity;
+            bot.transform.rotation = botPosition.rotation;
             bot.transform.localScale = botPosition.localScale;
         }
     }

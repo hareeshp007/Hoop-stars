@@ -1,4 +1,6 @@
 using hoopStars.Bot;
+using hoopStars.player;
+using hoopStars.sound;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +26,8 @@ namespace hoopStars.UI
         private int defaultScore;
         [SerializeField]
         private int WinScore;
+        [SerializeField]
+        private PlayerMovement player;
 
         private void Start()
         {
@@ -33,10 +37,6 @@ namespace hoopStars.UI
             pauseConfig();
         }
 
-        private void OnEnable()
-        {
-            //resumeConfig();
-        }
         private void SetTexts()
         {
             PlayerScoreText.text = "Score : " + defaultScore;
@@ -95,6 +95,7 @@ namespace hoopStars.UI
         }
         public void Restart()
         {
+            SoundManager.Instance.Play(Sounds.ButtonClick);
             SetGameObjects();
             SetTexts();
             pauseConfig();
@@ -112,6 +113,7 @@ namespace hoopStars.UI
         }
         public void SingleBot()
         {
+            SoundManager.Instance.Play(Sounds.ButtonClick);
             BotService.Instance.SpawnOneBot();
             Bot2ScoreBoard.SetActive(false);
             isTwoBot = false;
@@ -119,6 +121,7 @@ namespace hoopStars.UI
         }
         public void TwoBot()
         {
+            SoundManager.Instance.Play(Sounds.ButtonClick);
             BotService.Instance.SpwanTwoBot();
             Bot2ScoreBoard.SetActive(true);
             isTwoBot = true;
@@ -141,6 +144,22 @@ namespace hoopStars.UI
             UIScore.SetActive(true);
             UIStatus.SetActive(false);
             UIGameStart.SetActive(false);
+        }
+        public void Exit()
+        {
+            Application.Quit();
+        }
+        public void SetPlayer(PlayerMovement playerMovement)
+        {
+            player=playerMovement;
+        }
+        public void LeftSideForce()
+        {
+            player.forceTowardsLeft();
+        }
+        public void RightSideForce()
+        {
+            player.forceTowardsRight();
         }
 
     }
